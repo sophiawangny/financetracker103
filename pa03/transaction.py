@@ -1,4 +1,5 @@
 def toDict(t):
+    #areen
     ''' t is a tuple ('item id','amount','category','date','description')'''
     print('t='+str(t))
     transaction = {'itemid':t[0], 'amount':t[1], 'category':t[2], 'date':t[3], 'description':t[4]}
