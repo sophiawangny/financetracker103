@@ -2,7 +2,20 @@
 
 from transaction import Transaction
 
-
+menu_options = '''Please select the number corresponding the command:
+0. quit
+1. show categories
+2. add category
+3. modify category
+4. show transactions
+5. add transaction
+6. delete transaction
+7. summarize transactions by date (MM-DD-YYYY)
+8. summarize transactions by month (MM)
+9. summarize transactions by year (YYYY)
+10. summarize transactions by category
+11. print this menu
+'''
 
 def process_choice(choice):
 
@@ -35,8 +48,8 @@ def toplevel():
     ''' handle the user's choice '''
 
     ''' read the command args and process them'''
-    print(menu)
+    print(menu_options)
     choice = input("> ")
     while choice !='0' :
         choice = process_choice(choice)
-    print('bye')
+    print('THE END')
