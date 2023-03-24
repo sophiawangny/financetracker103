@@ -37,10 +37,9 @@ def process_choice(choice):
         name = input("new name of category: ")
         desc = input("new category description: ")
         ctgry = {'name':name, 'desc':desc}
-<<<<<<< HEAD
         transaction.update(id,ctgry)		#calls the update method from Transaction 
     elif choice == '4': #show transactions 
-    	transactions = transaction.get_transactions() 	#calls the get_transactions method from Transaction
+        transactions = transaction.get_transactions() 	#calls the get_transactions method from Transaction
         print("Transactions:")
         for transaction in transactions:
             print(f"- {transaction}")
@@ -59,19 +58,7 @@ def process_choice(choice):
         print(f"Transactions on {date}:")
         for ctgry, amount in summary.items():
             print(f"- {ctgry}: {amount}")
-    elif choice == '8':
-=======
-        transaction.update(id,ctgry)
-
-
-    elif choice=='7': #summarize transactions by date (MM-DD-YYYY)
-        date=input("Enter the date (MM-DD-YYYY):")
-        summary = transaction.summarize_transactions_by_date(date) #Calls the summarize_transaction_by_date method from Transaction class 
-        print(f"Transactions on {date}:")
-        for category, amount in summary.items():
-            print(f"- {category}: {amount}")
-    elif choice == '8': #summarize transactions by month (MM)
->>>>>>> 7731a0f4b4357a67b9a776c93e95926c11007c48
+    elif choice == '8': # summarize transactions by month (MM)
         month = input("Enter the month (YYYY-MM): ")
         summary = transaction.summarize_transactions_by_month(month) #Calls the summarize_transaction_by_month
         print(f"Transactions in {month}:")
