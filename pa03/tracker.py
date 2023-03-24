@@ -22,7 +22,7 @@ def process_choice(choice):
     if choice=='0':
         return
     elif choice=='1':
-        cats = category.select_all()
+        cats = select_all() #will be changed to transaction.select_all()
         print_categories(cats)
     elif choice=='2':
         name = input("category name: ")
@@ -53,3 +53,22 @@ def toplevel():
     while choice !='0' :
         choice = process_choice(choice)
     print('THE END')
+
+
+
+
+    
+
+
+#add to transaction, delete later
+def select_all(self):
+    con= sqlite3.connect(self.dbfile)
+    cur = con.cursor()
+    cur.execute("SELECT rowid,* from categories")
+    tuples = cur.fetchall()
+    con.commit()
+    con.close()
+    return to_cat_dict_list(tuples)
+
+
+        
