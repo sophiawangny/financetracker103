@@ -1,6 +1,10 @@
 # offers the user the following options and makes calls to the Transaction class to update the database.
 
 from transaction import Transaction
+import sys
+
+transactions = Transaction('tracker.db')
+
 
 menu_options = '''Please select the number corresponding the command:
 0. quit
@@ -36,6 +40,42 @@ def process_choice(choice):
         desc = input("new category description: ")
         cat = {'name':name, 'desc':desc}
         category.update(rowid,cat)
+    elif choice=='7':
+    	date=input("Enter the date (MM-DD-YYYY):")
+    	summary = transaction.summarize_transactions_by_date(date) #Calls the summarize_transaction_by_date method from Transaction class 
+    	print(f"Transactions on {date}:")
+    	for category, amount in summary.items():
+    		print(f"- {category}: {amount}")
+    elif choice == '8':
+    	month = input("Enter the month (YYYY-MM): ")
+    	summary = transaction.summarize_transactions_by_month(month) #Calls the summarize_transaction_by_month
+    	print(f"Transactions in {month}:")
+    	for category, amount in summary.items():
+    		print(f"- {category}: {amount}")
+   	elif choice == '9'
+        year = input("Enter the year (YYYY): ")
+        summary = transaction.summarize_transactions_by_year(year) #Calls the summarize_transaction_by_year
+        print(f"Transactions in {year}:")
+        for category, amount in summary.items():
+        	print(f"- {category}: {amount}")
+    elif choice == '10':
+    	category = input("Enter the category: ")
+    	summary = transaction.summarize_transactions_by_category(category)
+        print(f"Transactions in '{category}':")
+        for date, amount in summary.items():
+        	print(f"- {date}: {amount}")
+    elif choice=='11':
+    	print(menu_options)
+
+  	else:
+  		print("Invalid choice, try again")
+  		toplevel()
+
+
+
+
+
+
     else:
         print("choice",choice,"not yet implemented")
 
@@ -53,3 +93,4 @@ def toplevel():
     while choice !='0' :
         choice = process_choice(choice)
     print('THE END')
+
