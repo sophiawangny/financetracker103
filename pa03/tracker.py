@@ -22,30 +22,42 @@ def process_choice(choice):
     if choice=='0': #quit
         return
     elif choice=='1': #show categories
-        ctgries = transaction.select_all() #will be changed to transaction.select_all()
+        ctgries = transaction.select_all() 	 #calls the select_all method from Transaction 
         print("Categories:")
-        for category in ctgries:
-            print(f"- {category}")
+        for cat in ctgries:
+            print(f"- {cat}")
     elif choice=='2': #add category
         name = input("name of category: ")
         desc = input("category description: ")
         ctgry = {'name':name, 'desc':desc}
-        transaction.add(ctgry) #will be changed to transaction.add()
-    elif choice=='3': #modiify category
+        transaction.add(ctgry) 			#calls the add method from Transaction
+    elif choice=='3': #modify category
         print("Modify Category:")
         id = int(input("id: "))
         name = input("new name of category: ")
         desc = input("new category description: ")
         ctgry = {'name':name, 'desc':desc}
-        transaction.update(id,ctgry)
-
-
-    elif choice=='7':
+        transaction.update(id,ctgry)		#calls the update method from Transaction 
+    elif choice == '4': #show transactions 
+    	transactions = transaction.get_transactions() 	#calls the get_transactions method from Transaction
+        print("Transactions:")
+        for transaction in transactions:
+            print(f"- {transaction}")
+    elif choice == "5": #add transaction 
+        amount = input("Enter the amount: ")
+        ctgry = input("Enter the category: ")
+        date = input("Enter the date (YYYY-MM-DD): ")
+        description = input("Enter the transaction description: ")
+        transaction.add_transaction(amount, ctgry, date, description)  #calls the add_transaction method from Transaction 
+    elif choice == "6": #delete transaction
+        item_num = input("Enter the item number to delete: ")
+        transaction.delete_transaction(item_num)		#calls the delete_transaction method from Transaction
+    elif choice=='7':      # summarize transactions by date
         date=input("Enter the date (MM-DD-YYYY):")
         summary = transaction.summarize_transactions_by_date(date) #Calls the summarize_transaction_by_date method from Transaction class 
         print(f"Transactions on {date}:")
-        for category, amount in summary.items():
-            print(f"- {category}: {amount}")
+        for ctgry, amount in summary.items():
+            print(f"- {ctgry}: {amount}")
     elif choice == '8':
         month = input("Enter the month (YYYY-MM): ")
         summary = transaction.summarize_transactions_by_month(month) #Calls the summarize_transaction_by_month
