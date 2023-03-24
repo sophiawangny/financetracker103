@@ -16,6 +16,16 @@ class Transaction:
     #amount might be int
     #    return self.runQuery("UPDATE transaction SET completed=1 WHERE rowid=(?)",(rowid,))
     #should we set the date of transaction to Datetime.now()
+
+    def add(self,item):
+        #areen
+        ''' create a transaction item and add it to the transaction table '''
+        return self.runQuery("INSERT INTO transaction VALUES(?,?,?)",(item['amount'],description['desc'],item['date']))
+
+    def delete(self,rowid):
+        #areen
+        ''' delete a transaction item '''
+        return self.runQuery("DELETE FROM transaction WHERE itemid=(?)",(itemid,))
     
     def runQuery(self,query,tuple):
         ''' return all of the uncompleted tasks as a list of dicts.'''
