@@ -44,6 +44,12 @@ class Transaction:
         #areen
         self.runQuery('DELETE FROM transaction WHERE itemid = ?', (itemid,))
 
+    def get_transactions_by_date(self, date):
+        return self.run_query('SELECT * FROM transactions WHERE date = ?', (date,))
+    
+    def get_transactions_by_category(self, category):
+        return self.run_query('SELECT * FROM transactions WHERE category = ?', (category,))
+
     def modify_transaction(self, itemif, amount=None, category=None, date=None, description=None):
         #areen
         update_query = 'UPDATE transaction SET '
