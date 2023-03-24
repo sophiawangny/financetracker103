@@ -26,6 +26,12 @@ class Transaction:
         #areen
         ''' delete a transaction item '''
         return self.runQuery("DELETE FROM transaction WHERE itemid=(?)",(itemid,))
+
+    def add_transaction(self, itemid, amount, category, date, description):
+        self.run_query('''
+            INSERT INTO transactions (itemid, amount, category, date, description)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (itemid, amount, category, date, description))
     
     def runQuery(self,query,tuple):
         ''' return all of the uncompleted tasks as a list of dicts.'''
