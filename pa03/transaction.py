@@ -1,3 +1,6 @@
+import sqlite3
+import os
+
 def toDict(t):
     #areen
     ''' t is a tuple ('item id','amount','category','date','description')'''
@@ -6,15 +9,16 @@ def toDict(t):
     return transaction
 
 class Transaction:
-    def __init__(self, filename):
-        self.cnct = sqlite3.connect(filename)
+    ##def __init__(self, filename):
+    #    self.cnct = sqlite3.connect(filename)
 
-    #suggester __init__(self, filename) fro lecture 19 like the professor asked in mastery
-    #def __init__(self):
-    #   self.runQuery('''CREATE TABLE IF NOT EXISTS transaction
-    #               (amount text, category text, date text, description text)''',())
+    #suggested __init__(self, filename) fro lecture 19 like the professor asked in mastery
+    def __init__(self):
+        self.runQuery('''CREATE TABLE IF NOT EXISTS trans
+                   (amount text, category text, date text, description text)''',())
+        
     #amount might be int
-    #    return self.runQuery("UPDATE transaction SET completed=1 WHERE rowid=(?)",(rowid,))
+        #return self.runQuery("UPDATE transaction SET completed=1 WHERE rowid=(?)",(rowid,))
     #should we set the date of transaction to Datetime.now()
 
     
@@ -31,16 +35,17 @@ class Transaction:
 
     def add_transaction(self, itemid, amount, category, date, description):
         #areen
-        self.run_query('''
+        self.runQuery('''
             INSERT INTO transaction (itemid, amount, category, date, description)
             VALUES (?, ?, ?, ?, ?)
         ''', (itemid, amount, category, date, description))
 
     def delete_transaction(self, transaction_id):
         #areen
-        self.run_query('DELETE FROM transaction WHERE itemid = ?', (itemid,))
+        self.runQuery('DELETE FROM transaction WHERE itemid = ?', (itemid,))
 
     def modify_transaction(self, itemif, amount=None, category=None, date=None, description=None):
+        #areen
         update_query = 'UPDATE transaction SET '
         update_args = []
         if amount is not None:
@@ -58,15 +63,21 @@ class Transaction:
         update_query = update_query.rstrip(', ')
         update_query += ' WHERE itemid = ?'
         update_args.append(itemid)
-        self.run_query(update_query, tuple(update_args))
+        self.runQuery(update_query, tuple(update_args))
     
     def runQuery(self,query,tuple):
         ''' return all of the uncompleted tasks as a list of dicts.'''
         #areen
-        con= sqlite3.connect(os.getenv('HOME')+'/transaction.db')
+        con= sqlite3.connect('trans.db')
+        
         cur = con.cursor() 
         cur.execute(query,tuple)
         tuples = cur.fetchall()
         con.commit()
         con.close()
+        
         return [toDict(t) for t in tuples]
+        # return True
+
+if __name__ == "__main__": 
+    transaction=Transaction()
