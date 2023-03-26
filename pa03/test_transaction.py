@@ -82,13 +82,13 @@ def test_to_year(transaction): #sophia
 def test_modify_category(transaction):#sophia
 
     # define the test category
-    category = {'name': 'School', 'desc': 'category for my school supplies'}
+    category = {'name': 'School', 'description': 'category for my school supplies'}
 
     # add the test category to the database
     cat_id = transaction.add_category(category)
 
     # modify the category
-    new_category = {'name': 'School supplies', 'desc': 'all my school supplies'}
+    new_category = {'name': 'School supplies', 'description': 'all my school supplies'}
     transaction.modify_category(cat_id, new_category)
 
     # retrieve the modified category from the database
