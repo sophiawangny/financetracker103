@@ -35,6 +35,14 @@ def test_get_transactions_by_date(transaction):
     transactions = transaction.get_transactions_by_date('2022-03-26')
     assert len(transactions) == 2
 
+def test_get_transactions_by_year(transaction):
+    #areen
+    transaction.add_transaction(1, 10, 'food', '2022-03-25', 'Bought pizza')
+    transaction.add_transaction(2, 20, 'clothing', '2022-03-26', 'Bought a shirt')
+    transaction.add_transaction(2, 4, 'Drinks', '2022-03-26', 'Bought a coffee')
+
+    transactions = transaction.get_transactions_by_year('2022')
+    assert len(transactions) == 3
 
 def test_add_category(transaction):
     transaction.add_category({'name': 'food', 'description': 'Groceries'})
