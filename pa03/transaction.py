@@ -22,7 +22,7 @@ class Transaction:
     ''' Transaction represents a table of transaction'''
     def __init__(self):
         self.database = sqlite3.connect('trans.db')
-        self.run_query('''CREATE TABLE IF NOT EXISTS transaction
+        self.run_query('''CREATE TABLE IF NOT EXISTS transactions
                           (itemid real, amount real, category text, date text, description text)''')
 
     def add_transaction(self, itemid, amount, category, date, description):
@@ -61,6 +61,30 @@ class Transaction:
             FROM transaction 
             WHERE category = ?
             ''', (category,)).fetchall()
+
+    def get_transactions_by_month(self, month):
+        # Yalda
+        '''returns a dictionary of transactions by category for the given month'''
+        query = '''
+            SELECT category, SUM(amount)
+            FROM transaction 
+            WHERE strftime('%m', date) = ?
+            GROUP BY category
+        '''
+        transactions = self.database.execute(query, (month,)).fetchall()
+        return {category: amount for category, amount in transactions}
+
+    def get_transactions_by_year(self, year):
+        # Yalda
+        '''returns a dictionary of transactions by category for the given year'''
+        query = '''
+            SELECT category, SUM(amount)
+            FROM transaction 
+            WHERE strftime('%Y', date) = ?
+            GROUP BY category
+        '''
+        transactions = self.database.execute(query, (year,)).fetchall()
+        return {category: amount for category, amount in transactions}
 
 
     def select_all(self):
