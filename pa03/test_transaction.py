@@ -77,11 +77,11 @@ def test_update_category(transaction):
 
 
 def test_to_month(transaction): #sophia
-    transaction.to_month('02-04-2001')
+    transaction.to_month('2001-02-04')
     assert '2'
 
 def test_to_year(transaction): #sophia
-    transaction.to_month('02-04-2001')
+    transaction.to_month('2001-02-04')
     assert '2001'
 
 
