@@ -51,6 +51,11 @@ class Transaction:
     def get_transactions_by_category(self, category):
         #areen
         return self.run_query('SELECT * FROM transactions WHERE category = ?', (category,))
+    
+    def get_transactions_by_month(self, category):
+        #omar
+        return self.run_query('SELECT * FROM birthday ORDER BY STR_TO_DATE(CONCAT(month, '0001 ', ' 01'), '%M %d %Y'))
+        return self.run_query('SELECT * FROM transactions WHERE date = ?', (date,))
 
     def modify_transaction(self, itemif, amount=None, category=None, date=None, description=None):
         #areen
