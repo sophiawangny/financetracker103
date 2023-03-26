@@ -67,13 +67,13 @@ class Transaction:
 
     def to_month(date):
         #Omar
-        format = '%b %d %Y'  # The format, can be changed depending on what is used
+        format = '%Y-%m-%d'  # The format, can be changed depending on what is used
         datetimestr = datetime.datetime.strptime(date, format)
         return datetimestr.month
     
     def to_year(date):
         #Omar
-        format = '%b %d %Y'  # The format, can be changed depending on what is used
+        format = '%Y-%m-%d' # The format, can be changed depending on what is used
         datetimestr = datetime.datetime.strptime(date, format)
         return datetimestr.year
     '''
