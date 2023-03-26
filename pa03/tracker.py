@@ -18,7 +18,7 @@ menu_options = '''Please select the number corresponding the command:
 '''
 
 def process_choice(choice):
-	transaction = Transaction(tracker.db) # create an instance of the Transaction class
+	transaction = Transaction() # create an instance of the Transaction class
 
 
     if choice=='0': #quit
@@ -34,7 +34,7 @@ def process_choice(choice):
         name = input("name of category: ")
         desc = input("category description: ")
         ctgry = {'name':name, 'desc':desc}
-        transaction.add(ctgry) 			#calls the add method from Transaction
+        transaction.add_category(ctgry) 			#calls the add_Category method from Transaction
 
     elif choice=='3': #modify category
         print("Modify Category:")
@@ -42,20 +42,21 @@ def process_choice(choice):
         name = input("new name of category: ")
         desc = input("new category description: ")
         ctgry = {'name':name, 'desc':desc}
-        transaction.update(id,ctgry)		#calls the update method from Transaction 
+        transaction.update_category(id,ctgry)		#calls the update_category method from Transaction 
 
     elif choice == '4': #show transactions 
         transactions = transaction.get_transactions() 	#calls the get_transactions method from Transaction
         print("Transactions:")
-        for transaction in transactions:
-            print(f"- {transaction}")
+        for t in transactions:
+            print(f"- {t['itemid']}: {t['amount']} - {t['category']} - {t['date']} - {t['description']}")
 
     elif choice == '5': #add transaction 
+        itemid = input("itemid: ")
         amount = input("Enter the amount: ")
         ctgry = input("Enter the category: ")
         date = input("Enter the date (YYYY-MM-DD): ")
         description = input("Enter the transaction description: ")
-        transaction.add_transaction(amount, ctgry, date, description)  #calls the add_transaction method from Transaction 
+        transaction.add_transaction(itemid, amount, ctgry, date, description)  #calls the add_transaction method from Transaction 
 
     elif choice == '6': #delete transaction
         item_num = input("Enter the item number to delete: ")
@@ -88,7 +89,7 @@ def process_choice(choice):
         print(f"Transactions in '{ctgry}':")
         for date, amount in summary.items():
             print(f"- {date}: {amount}")
-            
+
     elif choice=='11': #print this menu
         print(menu_options)
 
