@@ -3,7 +3,7 @@ import os
 import datetime
 
 def to_dict(trans):
-    #areen
+    #Areen
     ''' t is a tuple ('item id','amount','category','date','description')'''
     print('transaction='+str(trans))
     result = {'itemid':trans[0], 'amount':trans[1],
@@ -17,6 +17,7 @@ def transaction_list(transaction_tuples):
     return [to_dict(transaction) for transaction in transaction_tuples]
 
 class Transaction:
+    #Areen
     ''' Transaction represents a table of transaction'''
     def __init__(self):
         self.runQuery('''CREATE TABLE IF NOT EXISTS transactions
@@ -24,7 +25,7 @@ class Transaction:
     
 
     def add_transaction(self, itemid, amount, category, date, description):
-        #areen
+        #Areen
         ''' add a transaction to the transactions table.'''
         self.runQuery('''
             INSERT INTO transaction (itemid, amount, category, date, description)
@@ -32,7 +33,7 @@ class Transaction:
         ''', (itemid, amount, category, date, description))
 
     def delete_transaction(self, transaction_id):
-        #areen
+        #Areen
         ''' delete a transaction with a specified item id'''
         self.runQuery('DELETE FROM transaction WHERE itemid = ?', (itemid,))
 
@@ -44,32 +45,34 @@ class Transaction:
         return [to_dict(t) for t in transactions]
 
     def get_transactions_by_date(self, date):
-        #areen
+        #Areen
         '''returns a list of transactions by date'''
         query = '''SELECT * FROM transaction WHERE date = ?'''
         return self.runQuery(query, (date,)).fetchall()
     
     def get_transactions_by_category(self, category):
-        #areen
+        #Areen
         '''returns a list of transactions by category'''
         return self.runQuery('SELECT * FROM transactions WHERE category = ?', (category,))
     
     def get_transactions_by_month(self, month):
-        #omar
+        #Omar
         '''returns a dictionary of transactions by category for the given month'''
         return self.runQuery('SELECT * FROM transactions WHERE to_month(date) = ?', (month,))
     
     def get_transactions_by_year(self, year):
-        #omar
+        #Omar
         '''returns a dictionary of transactions by category for the given year'''
         return self.runQuery('SELECT * FROM transactions WHERE to_year(date) = ?', (year,))
 
     def to_month(date):
+        #Omar
         format = '%b %d %Y'  # The format, can be changed depending on what is used
         datetimestr = datetime.datetime.strptime(date, format)
         return datetimestr.month
     
     def to_year(date):
+        #Omar
         format = '%b %d %Y'  # The format, can be changed depending on what is used
         datetimestr = datetime.datetime.strptime(date, format)
         return datetimestr.year
@@ -120,7 +123,7 @@ class Transaction:
     
     def runQuery(self,query,tuple):
         ''' return all of the uncompleted tasks as a list of dicts.'''
-        #areen
+        #Areen
         con= sqlite3.connect('trans.db')
         
         cur = con.cursor() 
