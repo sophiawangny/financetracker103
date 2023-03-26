@@ -41,9 +41,8 @@ class Transaction:
     def get_transactions(self):
         #Yalda
         '''returns a list of transactions'''
-        temp = self.runQuery('''SELECT * FROM transactions''', ())
-        transactions = temp.fetchall()
-        return [to_dict(t) for t in transactions]
+        return self.runQuery('''SELECT * FROM transactions''', ()).fetchall()
+   
 
     def get_transactions_by_date(self, date):
         #Areen
