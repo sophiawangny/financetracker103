@@ -76,28 +76,7 @@ class Transaction:
         format = '%Y-%m-%d' # The format, can be changed depending on what is used
         datetimestr = datetime.datetime.strptime(date, format)
         return datetimestr.year
-    '''
-    def modify_transaction(self, itemif, amount=None, category=None, date=None, description=None):
-        #areen
-        update_query = 'UPDATE transaction SET '
-        update_args = []
-        if amount is not None:
-            update_query += 'amount = ?, '
-            update_args.append(amount)
-        if category is not None:
-            update_query += 'category = ?, '
-            update_args.append(category)
-        if date is not None:
-            update_query += 'date = ?, '
-            update_args.append(date)
-        if description is not None:
-            update_query += 'description = ?, '
-            update_args.append(description)
-        update_query = update_query.rstrip(', ')
-        update_query += ' WHERE itemid = ?'
-        update_args.append(itemid)
-        self.runQuery(update_query, tuple(update_args))
-    '''
+    
 
     def select_all(self):
         #Yalda
