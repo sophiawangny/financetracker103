@@ -3,7 +3,7 @@ and makes calls to the Transaction class to update the database"""
 
 from transaction import Transaction
 
-MENU_OPTIONS = '''Please select the number corresponding the command:
+MENU_OPTIONS = '''Please select the number to the command you would like:
 0. quit
 1. show categories
 2. add category
@@ -18,7 +18,8 @@ MENU_OPTIONS = '''Please select the number corresponding the command:
 11. print this menu
 '''
 
-"""This method process the user input"""
+"""takes in the user input"""
+#sophia 
 def process_choice(choice):
     transaction=Transaction()
     if choice=='0': #quit
@@ -56,7 +57,7 @@ def process_choice(choice):
     elif choice == '6': #delete transaction
         item_num = input("Enter the item number to delete: ")
         transaction.delete_transaction(item_num)
-    elif choice=='7': #summarize transactions by date
+    elif choice=='7': #summarize transactions by date #sophia 
         date=input("Enter the date (MM-DD-YYYY):")
         summary = transaction.get_transactions_by_date(date)
         print(f"Transactions on {date}:")
@@ -74,17 +75,18 @@ def process_choice(choice):
         print(f"Transactions in {year}:")
         for ctgry, amount in summary.items():
             print(f"- {ctgry}: {amount}")
-    elif choice == '10': #summarize transactions by category
+    elif choice == '10': #summarize transactions by category #sophia 
         ctgry = input("Enter the category: ")
         summary = transaction.get_transactions_by_category(ctgry)
         print(f"Transactions in '{ctgry}':")
         for date, amount in summary.items():
             print(f"- {date}: {amount}")
-    elif choice=='11': #print this menu
+    elif choice=='11': #print this menu 
         print(MENU_OPTIONS)
     else:
         print("Invalid choice, try again")
 
+#yalda 
 def toplevel():
     ''' take in user choice '''
     print(MENU_OPTIONS)
