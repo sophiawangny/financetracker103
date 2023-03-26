@@ -40,7 +40,7 @@ class Transaction:
     def get_transactions(self):
         #Yalda
         '''returns a list of transactions'''
-        temp = self.runQuery('''SELECT * FROM transactions''')
+        temp = self.runQuery('''SELECT * FROM transactions''', ())
         transactions = temp.fetchall()
         return [to_dict(t) for t in transactions]
 

@@ -62,9 +62,9 @@ def test_add_category(transaction):
     assert len(categories) == 1
     assert categories[0][0] == 'food'
     
-def test_update_category(transaction):
+def test_modify_category(transaction):
     transaction.add_category({'name': 'food', 'desc': 'Groceries and eating out'})
-    transaction.update_category(1, {'name': 'drinks', 'desc': 'Beverages'})
+    transaction.modify_category(1, {'name': 'drinks', 'desc': 'Beverages'})
     categories = transaction.select_all()
     assert len(categories) == 1
     assert categories[0][0] == 'drinks'
