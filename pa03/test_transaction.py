@@ -4,6 +4,7 @@ test_transactions runs unit and integration tests on the transactions module
 
 import pytest
 from transaction import Transaction
+transaction = Transaction()
 
 @pytest.fixture
 def transaction():
