@@ -109,7 +109,7 @@ class Transaction:
         #Yalda
         ''' add a category to the table.'''
         query = '''INSERT INTO categories(name, description) VALUES(?, ?)'''
-        values = (category['name'], category['desc'])
+        values = (category['name'], category['description'])
         cursor = self.runQuery(query, values)
         return
 
@@ -117,7 +117,7 @@ class Transaction:
         #Yalda
         '''modify a category in the table.'''
         query = '''UPDATE categories SET name = ?, description = ? WHERE id_num = ?'''
-        values = (category['name'], category['desc'], id_num)
+        values = (category['name'], category['description'], id_num)
         cursor= self.runQuery(query, values)
         return
     

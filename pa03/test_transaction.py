@@ -62,7 +62,7 @@ def test_add_category(transaction):
 def test_modify_transaction(transaction):
     #areen
     item = {'amount': 10.00, 'category': 'Groceries', 'date': '2022-03-01', 'description': 'Weekly groceries'}
-    transaction.add(item)
+    transaction.add_transaction(item)
     new_item = {'amount': 20.00, 'category': 'Groceries', 'date': '2022-03-01', 'description': 'Weekly groceries'}
     transaction.modify(result[0]['item #'], new_item)
     result = transaction.select_all()
