@@ -71,16 +71,16 @@ def test_modify_category(transaction):
 
 
 def test_to_month(transaction): #sophia
-    transaction.to_month('2001-02-04')
-    assert '2'
+    month= transaction.to_month('2001-02-04')
+    assert month == '2'
 
 def test_to_year(transaction): #sophia
-    transaction.to_year('2001-02-04')
-    assert '2001'
+    year= transaction.to_year('2001-02-04')
+    assert year =='2001'
 
 
 
-def test_modify_category(self, transaction):#sophia
+def test_modify_category(transaction):#sophia
 
     # define the test category
     category = {'name': 'School', 'desc': 'category for my school supplies'}
@@ -96,7 +96,7 @@ def test_modify_category(self, transaction):#sophia
     result = transaction.get_category_by_id(cat_id)
 
     # assert that the modified category has the correct values
-    self.assertEqual(result['name'], 'School supplies')
-    self.assertEqual(result['desc'], 'all my school supplies')
+    assert result['name'] == 'School supplies'
+    assert result['desc'] == 'all my school supplies'
 
 
