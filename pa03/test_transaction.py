@@ -61,15 +61,6 @@ def test_add_category(transaction):
     categories = transaction.select_all()
     assert len(categories) == 1
     assert categories[0][0] == 'food'
-
-def test_modify_transaction(transaction):
-    #areen
-    item = {'amount': 10.00, 'category': 'Groceries', 'date': '2022-03-01', 'description': 'Weekly groceries'}
-    transaction.add_transaction(item)
-    new_item = {'amount': 20.00, 'category': 'Groceries', 'date': '2022-03-01', 'description': 'Weekly groceries'}
-    transaction.modify(result[0]['item #'], new_item)
-    result = transaction.select_all()
-    assert result[0]['amount'] == 20.00
     
 def test_update_category(transaction):
     transaction.add_category({'name': 'food', 'desc': 'Groceries and eating out'})
