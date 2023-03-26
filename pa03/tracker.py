@@ -17,11 +17,11 @@ MENU_OPTIONS = '''Please select the number to the command you would like:
 10. summarize transactions by category
 11. print this menu
 '''
+transaction=Transaction()
 
-"""takes in the user input"""
-#sophia 
+#sophia/omar
 def process_choice(choice):
-    transaction=Transaction()
+    """takes in the user input"""
     if choice=='0': #quit
         return
     if choice=='1': #show categories
@@ -39,7 +39,7 @@ def process_choice(choice):
         name = input("new name of category: ")
         desc = input("new category description: ")
         ctgry = {'name':name, 'desc':desc}
-        transaction.update_category(id_num,ctgry)
+        transaction.modify_category(id_num,ctgry)
     elif choice == '4': #show transactions
         transactions = transaction.get_transactions()
         print("Transactions:")
@@ -57,7 +57,7 @@ def process_choice(choice):
     elif choice == '6': #delete transaction
         item_num = input("Enter the item number to delete: ")
         transaction.delete_transaction(item_num)
-    elif choice=='7': #summarize transactions by date #sophia 
+    elif choice=='7': #summarize transactions by date #sophia
         date=input("Enter the date (MM-DD-YYYY):")
         summary = transaction.get_transactions_by_date(date)
         print(f"Transactions on {date}:")
@@ -75,18 +75,18 @@ def process_choice(choice):
         print(f"Transactions in {year}:")
         for ctgry, amount in summary.items():
             print(f"- {ctgry}: {amount}")
-    elif choice == '10': #summarize transactions by category #sophia 
+    elif choice == '10': #summarize transactions by category #sophia
         ctgry = input("Enter the category: ")
         summary = transaction.get_transactions_by_category(ctgry)
         print(f"Transactions in '{ctgry}':")
         for date, amount in summary.items():
             print(f"- {date}: {amount}")
-    elif choice=='11': #print this menu 
+    elif choice=='11': #print this menu
         print(MENU_OPTIONS)
     else:
         print("Invalid choice, try again")
 
-#yalda 
+#yalda
 def toplevel():
     ''' take in user choice '''
     print(MENU_OPTIONS)
