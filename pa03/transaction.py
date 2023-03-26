@@ -117,7 +117,7 @@ class Transaction:
         con.commit()
         con.close()
 
-        return [toDict(t) for t in tuples]
+        return [to_dict(t) for t in tuples]
         # return True
 
 if __name__ == "__main__":
