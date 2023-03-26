@@ -2,77 +2,81 @@ import sqlite3
 import os
 import datetime
 
-def toDict(t):
-    #areen
+def to_dict(trans):
+    #Areen
     ''' t is a tuple ('item id','amount','category','date','description')'''
-    print('t='+str(t))
-    transaction = {'itemid':t[0], 'amount':t[1], 'category':t[2], 'date':t[3], 'description':t[4]}
-    return transaction
+    print('transaction='+str(trans))
+    result = {'itemid':trans[0], 'amount':trans[1],
+    'category':trans[2], 'date':trans[3], 'description':trans[4]}
+    return result
+
+
+def transaction_list(transaction_tuples):
+    #Yalda
+    ''' convert a list of transaction tuples into a list of dictionaries'''
+    return [to_dict(transaction) for transaction in transaction_tuples]
 
 class Transaction:
-    ##def __init__(self, filename):
-    #    self.cnct = sqlite3.connect(filename)
-
-    #suggested __init__(self, filename) fro lecture 19 like the professor asked in mastery
+    #Areen
+    ''' Transaction represents a table of transaction'''
     def __init__(self):
-        self.runQuery('''CREATE TABLE IF NOT EXISTS trans
-                   (amount text, category text, date text, description text)''',())
-        
-    #amount might be int
-        #return self.runQuery("UPDATE transaction SET completed=1 WHERE rowid=(?)",(rowid,))
-    #should we set the date of transaction to Datetime.now()
-
-    
-    #def add(self,item):
-    #    #areen
-    #    ''' create a transaction item and add it to the transaction table '''
-    #    return self.runQuery("INSERT INTO transaction VALUES(?,?,?)",(item['amount'],description['desc'],item['date']))
-
-    #def delete(self,rowid):
-    #    #areen
-    #    ''' delete a transaction item '''
-    #    return self.runQuery("DELETE FROM transaction WHERE itemid=(?)",(itemid,))
+        self.runQuery('''CREATE TABLE IF NOT EXISTS transactions
+                          (itemid real, amount real, category text, date text, description text)''')
     
 
     def add_transaction(self, itemid, amount, category, date, description):
-        #areen
+        #Areen
+        ''' add a transaction to the transactions table.'''
         self.runQuery('''
             INSERT INTO transaction (itemid, amount, category, date, description)
             VALUES (?, ?, ?, ?, ?)
         ''', (itemid, amount, category, date, description))
 
     def delete_transaction(self, transaction_id):
-        #areen
+        #Areen
+        ''' delete a transaction with a specified item id'''
         self.runQuery('DELETE FROM transaction WHERE itemid = ?', (itemid,))
 
+    def get_transactions(self):
+        #Yalda
+        '''returns a list of transactions'''
+        temp = self.runQuery('''SELECT * FROM transaction''')
+        transactions = temp.fetchall()
+        return [to_dict(t) for t in transactions]
+
     def get_transactions_by_date(self, date):
-        #areen
-        return self.run_query('SELECT * FROM transactions WHERE date = ?', (date,))
+        #Areen
+        '''returns a list of transactions by date'''
+        query = '''SELECT * FROM transaction WHERE date = ?'''
+        return self.runQuery(query, (date,)).fetchall()
     
     def get_transactions_by_category(self, category):
-        #areen
-        return self.run_query('SELECT * FROM transactions WHERE category = ?', (category,))
+        #Areen
+        '''returns a list of transactions by category'''
+        return self.runQuery('SELECT * FROM transactions WHERE category = ?', (category,))
     
     def get_transactions_by_month(self, month):
-        #omar
-        # i nthe format of yyyy-
-        return self.run_query('SELECT * FROM transactions WHERE to_month(date) = ?', (month,))
+        #Omar
+        '''returns a dictionary of transactions by category for the given month'''
+        return self.runQuery('SELECT * FROM transactions WHERE to_month(date) = ?', (month,))
     
     def get_transactions_by_year(self, year):
-        #omar
-        # i nthe format of yyyy-
-        return self.run_query('SELECT * FROM transactions WHERE to_year(date) = ?', (year,))
+        #Omar
+        '''returns a dictionary of transactions by category for the given year'''
+        return self.runQuery('SELECT * FROM transactions WHERE to_year(date) = ?', (year,))
 
     def to_month(date):
+        #Omar
         format = '%b %d %Y'  # The format, can be changed depending on what is used
         datetimestr = datetime.datetime.strptime(date, format)
         return datetimestr.month
     
     def to_year(date):
+        #Omar
         format = '%b %d %Y'  # The format, can be changed depending on what is used
         datetimestr = datetime.datetime.strptime(date, format)
         return datetimestr.year
-
+    '''
     def modify_transaction(self, itemif, amount=None, category=None, date=None, description=None):
         #areen
         update_query = 'UPDATE transaction SET '
@@ -93,10 +97,33 @@ class Transaction:
         update_query += ' WHERE itemid = ?'
         update_args.append(itemid)
         self.runQuery(update_query, tuple(update_args))
+    '''
+
+    def select_all(self):
+        #Yalda
+        ''' return all of the transactions as a list of dicts.'''
+        cursor = self.runQuery('''SELECT name FROM categories''')
+        return cursor.fetchall()
+
+    def add_category(self, category):
+        #Yalda
+        ''' add a category to the table.'''
+        query = '''INSERT INTO categories(name, description) VALUES(?, ?)'''
+        values = (category['name'], category['desc'])
+        cursor = self.runQuery(query, values)
+        return
+
+    def modify_category(self, id_num, category):
+        #Yalda
+        '''modify a category in the table.'''
+        query = '''UPDATE categories SET name = ?, description = ? WHERE id_num = ?'''
+        values = (category['name'], category['desc'], id_num)
+        cursor= self.runQuery(query, values)
+        return
     
     def runQuery(self,query,tuple):
         ''' return all of the uncompleted tasks as a list of dicts.'''
-        #areen
+        #Areen
         con= sqlite3.connect('trans.db')
         
         cur = con.cursor() 
