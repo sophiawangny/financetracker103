@@ -28,26 +28,26 @@ class Transaction:
         #Areen
         ''' add a transaction to the transactions table.'''
         self.runQuery('''
-            INSERT INTO transaction (itemid, amount, category, date, description)
+            INSERT INTO transactions (itemid, amount, category, date, description)
             VALUES (?, ?, ?, ?, ?)
         ''', (itemid, amount, category, date, description))
 
-    def delete_transaction(self, transaction_id):
+    def delete_transaction(self, itemid):
         #Areen
         ''' delete a transaction with a specified item id'''
-        self.runQuery('DELETE FROM transaction WHERE itemid = ?', (itemid,))
+        self.runQuery('DELETE FROM transactions WHERE itemid = ?', (itemid,))
 
     def get_transactions(self):
         #Yalda
         '''returns a list of transactions'''
-        temp = self.runQuery('''SELECT * FROM transaction''')
+        temp = self.runQuery('''SELECT * FROM transactions''')
         transactions = temp.fetchall()
         return [to_dict(t) for t in transactions]
 
     def get_transactions_by_date(self, date):
         #Areen
         '''returns a list of transactions by date'''
-        query = '''SELECT * FROM transaction WHERE date = ?'''
+        query = '''SELECT * FROM transactions WHERE date = ?'''
         return self.runQuery(query, (date,)).fetchall()
     
     def get_transactions_by_category(self, category):
@@ -136,4 +136,4 @@ class Transaction:
         # return True
 
 if __name__ == "__main__": 
-    transaction=Transaction()
+    transactions=Transaction()
