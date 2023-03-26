@@ -11,6 +11,7 @@ def transaction():
     return Transaction()
 
 def test_add_transaction(transaction):
+	#Yalda
     transaction.add_transaction(1, 10, 'Clothing', '2022-03-25', 'Bought a white t-shirt in the mall')
     transactions = transaction.get_transactions()
     assert len(transactions) == 1
@@ -21,6 +22,7 @@ def test_add_transaction(transaction):
     assert transactions[0]['description'] == 'Bought a white t-shirt in the mall'
 
 def test_delete_transaction(transaction):
+	#Yalda
     transaction.add_transaction(1, 10, 'food', '2022-03-25', 'Bought pizza')
     transaction.delete_transaction(1)
     transactions = transaction.get_transactions()
@@ -28,6 +30,7 @@ def test_delete_transaction(transaction):
 
 
 def test_get_transactions_by_date(transaction):
+	#Yalda
     transaction.add_transaction(1, 10, 'food', '2022-03-25', 'Bought pizza')
     transaction.add_transaction(2, 20, 'clothing', '2022-03-26', 'Bought a shirt')
     transaction.add_transaction(2, 4, 'Drinks', '2022-03-26', 'Bought a coffee')
