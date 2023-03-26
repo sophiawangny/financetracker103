@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import datetime
 
 def toDict(t):
     #areen
@@ -52,10 +53,25 @@ class Transaction:
         #areen
         return self.run_query('SELECT * FROM transactions WHERE category = ?', (category,))
     
-    def get_transactions_by_month(self, category):
+    def get_transactions_by_month(self, month):
         #omar
-        return self.run_query('SELECT * FROM birthday ORDER BY STR_TO_DATE(CONCAT(month, '0001 ', ' 01'), '%M %d %Y'))
-        return self.run_query('SELECT * FROM transactions WHERE date = ?', (date,))
+        # i nthe format of yyyy-
+        return self.run_query('SELECT * FROM transactions WHERE to_month(date) = ?', (month,))
+    
+    def get_transactions_by_year(self, year):
+        #omar
+        # i nthe format of yyyy-
+        return self.run_query('SELECT * FROM transactions WHERE to_year(date) = ?', (year,))
+
+    def to_month(date):
+        format = '%b %d %Y'  # The format, can be changed depending on what is used
+        datetimestr = datetime.datetime.strptime(date, format)
+        return datetimestr.month
+    
+    def to_year(date):
+        format = '%b %d %Y'  # The format, can be changed depending on what is used
+        datetimestr = datetime.datetime.strptime(date, format)
+        return datetimestr.year
 
     def modify_transaction(self, itemif, amount=None, category=None, date=None, description=None):
         #areen
