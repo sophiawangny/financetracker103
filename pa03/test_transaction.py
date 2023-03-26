@@ -18,6 +18,16 @@ def test_add_category(transaction):
     assert len(categories) == 1
     assert categories[0][0] == 'food' 
 
+    #sophia
+def test_select_all(transaction):
+    transaction.delete_categories()  #delete all categories first #sophia
+    transaction.delete_transactions()  #delete all transactions first #sophia
+
+    transaction.add_category({'name': 'food', 'description': 'Groceries'})
+    categories = transaction.select_all()
+    assert len(categories) == 1
+
+
 def test_add_transaction(transaction):
 	#Yalda
     transaction.add_transaction(1, 10, 'Clothing', '2022-03-25', 'Bought a white t-shirt in the mall')
@@ -64,14 +74,14 @@ def test_get_transactions_by_month(transaction):
     transactions = transaction.get_transactions_by_year('03')
     assert len(transactions) == 3
 
-    
-def test_modify_category(transaction):
-    transaction.add_category({'name': 'food', 'desc': 'Groceries and eating out'})
-    transaction.modify_category(1, {'name': 'drinks', 'desc': 'Beverages'})
+'''
+def test_modify_category2(transaction):
+    transaction.add_category({'name': 'food', 'description': 'Groceries and eating out'})
+    transaction.modify_category(1, {'name': 'drinks', 'description': 'Beverages'}) #sophia edited
     categories = transaction.select_all()
     assert len(categories) == 1
     assert categories[0][0] == 'drinks'
-
+''' 
 
 def test_to_month(transaction): #sophia
     month= transaction.to_month('2001-02-04')

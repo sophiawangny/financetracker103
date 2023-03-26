@@ -22,17 +22,16 @@ class Transaction:
     ''' Transaction represents a table of transaction'''
     def __init__(self):
             #sophia
-        self.conn = sqlite3.connect("transactions.db")
+        self.con = sqlite3.connect("transactions.db")
         self.runQuery('''CREATE TABLE IF NOT EXISTS transactions
-                          (itemid real, amount real, category text, 
-                          date text, description text)''',())
+                          (itemid INTEGER PRIMARY KEY AUTOINCREMENT, amount real, category text, 
+                          date text, description text)''',()) #sophia edited
         
         #sophia
         self.runQuery('''
             CREATE TABLE IF NOT EXISTS categories
-            (id INTEGER PRIMARY KEY, name TEXT, description TEXT)
+            (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT)
         ''', ())
-        
 
     def delete_categories(self): #sophia, testing
         query = 'DELETE FROM categories'
@@ -56,12 +55,13 @@ class Transaction:
         ''' delete a transaction with a specified item id'''
         self.runQuery('DELETE FROM transactions WHERE itemid = ?', (itemid,))
 
-    def get_transactions(self):
+    def get_transactions(self):  
         #Yalda
         '''returns a list of transactions'''
         temp = self.runQuery('''SELECT * FROM transactions''', ())
-        transactions = temp.fetchall()
-        return [to_dict(t) for t in transactions]
+       # transactions = temp.fetchall() #sophia commented out
+       # return [to_dict(t) for t in transactions]
+        return temp
 
     def get_transactions_by_date(self, date):
         #Areen
@@ -101,19 +101,25 @@ class Transaction:
 
     def select_all(self):
         #Yalda
-        ''' return all of the transactions as a list of dicts.'''
-        c = conn.cursor()
-        c.execute("SELECT DISTINCT category FROM transactions")
-        categories = [category[0] for category in c.fetchall()]
-        conn.close()
-        return categories
+ 
 
+    
+        ''' return all of the categories as a list of dicts.'''
+        query = "SELECT * FROM categories"
+        cursor = self.runQuery(query)
+        categories = cursor.fetchall()
+        return categories
+    
+    
     def add_category(self, category):
         #Yalda #sophia
         ''' add a category to the table.'''
         query = '''INSERT INTO categories(name, description) VALUES(?, ?)'''
         values = (category['name'], category['description'])
-        cursor = self.runQuery(query, values)
+        try:
+            self.runQuery(query, values)
+        except sqlite3.IntegrityError:
+            print('category is already in db')
         return  
 
 
@@ -127,13 +133,13 @@ class Transaction:
 
     def runQuery(self,query,tuple):
         ''' return all of the uncompleted tasks as a list of dicts.'''
-        #Areen
-        con= sqlite3.connect('transactions.db')
-        cur = con.cursor() 
+        #Areen #sophia edited
+        #con= sqlite3.connect('transactions.db')
+        cur = self.con.cursor()  
         cur.execute(query,tuple)
         tuples = cur.fetchall()
-        con.commit()
-        con.close()
+        self.con.commit()
+        #self.con.close()
 
         return [to_dict(t) for t in tuples]
         # return True
