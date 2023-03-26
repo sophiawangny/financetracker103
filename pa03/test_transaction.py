@@ -4,7 +4,6 @@ test_transactions runs unit and integration tests on the transactions module
 
 import pytest
 from transaction import Transaction
-transaction = Transaction()
 
 @pytest.fixture
 def transaction():
@@ -72,11 +71,11 @@ def test_modify_category(transaction):
 
 def test_to_month(transaction): #sophia
     month= transaction.to_month('2001-02-04')
-    assert month == '2'
+    assert month == 2
 
 def test_to_year(transaction): #sophia
     year= transaction.to_year('2001-02-04')
-    assert year =='2001'
+    assert year ==2001 
 
 
 
