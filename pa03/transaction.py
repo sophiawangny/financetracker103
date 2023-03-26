@@ -21,9 +21,27 @@ class Transaction:
     #Areen
     ''' Transaction represents a table of transaction'''
     def __init__(self):
+            #sophia
+        self.conn = sqlite3.connect("transactions.db")
         self.runQuery('''CREATE TABLE IF NOT EXISTS transactions
                           (itemid real, amount real, category text, 
                           date text, description text)''',())
+        
+        #sophia
+        self.runQuery('''
+            CREATE TABLE IF NOT EXISTS categories
+            (id INTEGER PRIMARY KEY, name TEXT, description TEXT)
+        ''', ())
+        
+
+    def delete_categories(self): #sophia, testing
+        query = 'DELETE FROM categories'
+        self.runQuery(query, ())
+    def delete_transactions(self): #sophia, testing
+        query = 'DELETE FROM transactions'
+        self.runQuery(query, ())
+
+
 
     def add_transaction(self, itemid, amount, category, date, description):
         #Areen
@@ -83,7 +101,6 @@ class Transaction:
     def select_all(self):
         #Yalda
         ''' return all of the transactions as a list of dicts.'''
-        conn = sqlite3.connect("transactions.db")
         c = conn.cursor()
         c.execute("SELECT DISTINCT category FROM transactions")
         categories = [category[0] for category in c.fetchall()]
@@ -91,18 +108,19 @@ class Transaction:
         return categories
 
     def add_category(self, category):
-        #Yalda
+        #Yalda #sophia
         ''' add a category to the table.'''
         query = '''INSERT INTO categories(name, description) VALUES(?, ?)'''
         values = (category['name'], category['description'])
         cursor = self.runQuery(query, values)
-        return
+        return  
 
-    def modify_category(self, id_num, category):
+
+    def modify_category(self, id, category):
         #Yalda
         '''modify a category in the table.'''
-        query = '''UPDATE categories SET name = ?, description = ? WHERE id_num = ?'''
-        values = (category['name'], category['description'], id_num)
+        query = '''UPDATE categories SET name = ?, description = ? WHERE id = ?'''
+        values = (category['name'], category['description'], id)
         cursor= self.runQuery(query, values)
         return
 
