@@ -84,8 +84,12 @@ class Transaction:
     def select_all(self):
         #Yalda
         ''' return all of the transactions as a list of dicts.'''
-        cursor = self.runQuery('''SELECT name FROM categories''')
-        return cursor.fetchall()
+        conn = sqlite3.connect("transactions.db")
+        c = conn.cursor()
+        c.execute("SELECT DISTINCT category FROM transactions")
+        categories = [category[0] for category in c.fetchall()]
+        conn.close()
+        return categories
 
     def add_category(self, category):
         #Yalda
@@ -106,9 +110,8 @@ class Transaction:
     def runQuery(self,query,tuple):
         ''' return all of the uncompleted tasks as a list of dicts.'''
         #Areen
-        con= sqlite3.connect('trans.db')
-
-        cur = con.cursor()
+        con= sqlite3.connect('transactions.db')
+        cur = con.cursor() 
         cur.execute(query,tuple)
         tuples = cur.fetchall()
         con.commit()
