@@ -74,3 +74,14 @@ def test_update_category(transaction):
     categories = transaction.select_all()
     assert len(categories) == 1
     assert categories[0][0] == 'drinks'
+
+
+def test_to_month(transaction): #sophia
+    transaction.to_month('Feb 4 2001')
+    assert 2
+
+def test_to_year(transaction): #sophia
+    transaction.to_month('Feb 4 2001')
+    assert 2001
+
+
