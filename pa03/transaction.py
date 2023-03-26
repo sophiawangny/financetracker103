@@ -21,7 +21,7 @@ class Transaction:
     ''' Transaction represents a table of transaction'''
     def __init__(self):
         self.runQuery('''CREATE TABLE IF NOT EXISTS transactions
-                          (itemid real, amount real, category text, date text, description text)''')
+                          (itemid real, amount real, category text, date text, description text)''',())
     
 
     def add_transaction(self, itemid, amount, category, date, description):
