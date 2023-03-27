@@ -7,10 +7,9 @@ def to_dict(trans):
     #Areen
     ''' t is a tuple ('item id','amount','category','date','description')'''
     print('transaction='+str(trans))
-    result = {'itemid':trans[0], 'amount':trans[1],
-    'category':trans[2], 'date':trans[3], 'description':trans[4]}
-    return result
-
+    transaction = {'itemid':trans[0], 'amount':trans[1],
+    'category':trans[2], 'date':trans[3], 'description':trans[4], 'category': trans[5]}
+    return transaction
 
 def transaction_list(transaction_tuples):
     #Yalda
@@ -20,82 +19,92 @@ def transaction_list(transaction_tuples):
 class Transaction:
     #Areen
     ''' Transaction represents a table of transaction'''
-    def __init__(self):
-            #sophia
-        self.con = sqlite3.connect("transactions.db")
-        self.runQuery('''CREATE TABLE IF NOT EXISTS transactions
-                          (itemid INTEGER PRIMARY KEY AUTOINCREMENT, amount real, category text, 
-                          date text, description text)''',()) #sophia edited
-        
-        #sophia
-        self.runQuery('''
-            CREATE TABLE IF NOT EXISTS categories
-            (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT)
-        ''', ())
+    def __init__(self, dbfile):
+        #Sophia
+        con = sqlite3.connect(dbfile)
+        cur = con.cursor()
+        cur.execute('''CREATE TABLE IF NOT EXISTS transactions
+                    (itemid real, amount real, date text, description text, category text)''')
+        con.commit()
+        con.close()
+        self.dbfile = dbfile
 
+
+    def select_all(self):
+        #Sophia
+        ''' return all of the transactions as a list of dicts.'''
+        con = sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        cur.execute("SELECT itemid,* from transactions")
+        tuples = cur.fetchall()
+        con.commit()
+        con.close()
+        return transaction_list(tuples)
 
 
     def add_transaction(self, itemid, amount, category, date, description):
         #Areen
         ''' add a transaction to the transactions table.'''
-        self.runQuery('''
-            INSERT INTO transactions (itemid, amount, category, date, description)
-            VALUES (?, ?, ?, ?, ?)
-        ''', (itemid, amount, category, date, description))
+        con = sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        cur.execute("INSERT INTO transactions VALUES(?,?,?,?,?)",
+                    (transaction['itemid'], transaction['amount'],
+                        transaction['date'], transaction['description'],  transaction['category']))
+        con.commit()
+        cur.execute('SELECT last_insert_rowid()')
+        last_rowid = cur.fetchone()
+        con.commit()
+        con.close()
+        return last_rowid[0]
 
     def delete_transaction(self, itemid):
         #Areen
         ''' delete a transaction with a specified item id'''
-        self.runQuery('DELETE FROM transactions WHERE itemid = ?', (itemid,))
+        con = sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        cur.execute("DELETE FROM transactions WHERE itemid=(?)", (itemid,))
+        con.commit()
+        con.close()
    
 
     def get_transactions_by_date(self, date):
         #Areen
         '''returns a list of transactions by date'''
-        query = '''SELECT * FROM transactions WHERE date = ?'''
-        return self.runQuery(query, (date,)).fetchall()
+        con = sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        #date format is MM-DD-YYYY
+        cur.execute("SELECT date FROM transactions WHERE date LIKE ?", ('%'+date+'%',))
+        tuples = cur.fetchall()
+        con.commit()
+        con.close()
+        return transaction_list(tuples)
 
     def get_transactions_by_category(self, category):
-        #Areen
+        #Yalda
         '''returns a list of transactions by category'''
-        return self.runQuery('SELECT * FROM transactions WHERE category = ?', (category,))
+        con = sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        cur.execute("SELECT category, sum(amount) FROM transactions GROUP BY category")
+        tuples = cur.fetchall()
+        con.commit()
+        con.close()
+        return to_trans_dict(tuples)
 
     def get_transactions_by_month(self, month):
         #Omar
         '''returns a dictionary of transactions by category for the given month'''
-        return self.runQuery('SELECT * FROM transactions WHERE to_month(date) = ?', (month,))
+        con = sqlite3.connect(self.dbfile)
+        cur = con.cursor()
+        cur.execute("SELECT date FROM transactions WHERE date LIKE ?", (month+'-%',))
+        tuples = cur.fetchall()
+        con.commit()
+        con.close()
+        return to_trans_dict_list(tuples)
 
     def get_transactions_by_year(self, year):
         #Omar
         '''returns a dictionary of transactions by category for the given year'''
         return self.runQuery('SELECT * FROM transactions WHERE to_year(date) = ?', (year,))
-
-    def to_month(self, date):
-        '''converts string to a date and gets the month'''
-        #Omar
-        format = '%Y-%m-%d'  # The format, can be changed depending on what is used
-        datetimestr = datetime.datetime.strptime(date, format)
-        return datetimestr.month
-
-    def to_year(self, date):
-        '''converts string to a date and gets the year'''
-        #Omar
-        format = '%Y-%m-%d' # The format, can be changed depending on what is used
-        datetimestr = datetime.datetime.strptime(date, format)
-        return datetimestr.year
-
-    def runQuery(self,query,tuple):
-        ''' return all of the uncompleted tasks as a list of dicts.'''
-        #Areen #sophia edited
-        #con= sqlite3.connect('transactions.db')
-        cur = self.con.cursor()  
-        cur.execute(query,tuple)
-        tuples = cur.fetchall()
-        self.con.commit()
-        #self.con.close()
-
-        return [to_dict(t) for t in tuples]
-        # return True
 
 if __name__ == "__main__":
     transactions=Transaction()

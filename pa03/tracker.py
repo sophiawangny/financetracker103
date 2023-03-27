@@ -21,8 +21,9 @@ MENU_OPTIONS = '''Please select the number to the command you would like:
 '''
 transaction=Transaction()
 
-#sophia/omar
+
 def process_choice(choice):
+    #sophia/omar
     """takes in the user input"""
     if choice=='0': #quit
         return
@@ -88,8 +89,9 @@ def process_choice(choice):
     else:
         print("Invalid choice, try again")
 
-#yalda
+
 def toplevel():
+    #Sophia
     ''' take in user choice '''
     print(MENU_OPTIONS)
     choice = input("> ")
