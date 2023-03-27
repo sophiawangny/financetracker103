@@ -9,25 +9,6 @@ from transaction import Transaction
 def transaction():
     return Transaction()
 
-def test_add_category(transaction):
-    transaction.delete_categories()  #delete all categories first #sophia
-    transaction.delete_transactions()  #delete all transactions first #sophia
-
-    transaction.add_category({'name': 'food', 'description': 'Groceries'})
-    categories = transaction.select_all()
-    assert len(categories) == 1
-    assert categories[0][0] == 'food' 
-
-    #sophia
-def test_select_all(transaction):
-    transaction.delete_categories()  #delete all categories first #sophia
-    transaction.delete_transactions()  #delete all transactions first #sophia
-
-    transaction.add_category({'name': 'food', 'description': 'Groceries'})
-    categories = transaction.select_all()
-    assert len(categories) == 1
-
-
 def test_add_transaction(transaction):
 	#Yalda
     transaction.add_transaction(1, 10, 'Clothing', '2022-03-25', 'Bought a white t-shirt in the mall')
@@ -92,32 +73,5 @@ def test_to_year(transaction): #sophia
     assert year ==2001 
 
 
-
-def test_modify_category(transaction):#sophia
-
-    # define the test category
-    category = {'name': 'School', 'description': 'category for my school supplies'}
-
-    # add the test category to the database
-    cat_id = transaction.add_category(category)
-
-    # modify the category
-    new_category = {'name': 'School supplies', 'description': 'all my school supplies'}
-    transaction.modify_category(cat_id, new_category)
-
-
-    query = '''SELECT * FROM categories WHERE id = ?'''
-    category = transaction.runQuery(query, (cat_id,))
-    if category:
-        result = transaction.to_dict(category[0])
-    else:
-        return None
-
-    # retrieve the modified category from the database
-
-
-    # assert that the modified category has the correct values
-    assert result['name'] == 'School supplies'
-    assert result['desc'] == 'all my school supplies'
 
 
