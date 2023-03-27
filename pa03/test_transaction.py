@@ -15,6 +15,7 @@ def db_file():
 
 
 def test_init(db_file):
+	#Sophia
     transaction = Transaction(db_file)
     assert os.path.exists(db_file)
 
@@ -37,6 +38,8 @@ def test_add_transaction(db_file):
     transaction = Transaction(db_file)
     itemid = transaction.add_transaction(1, 100, 'food', '2022-03-25', 'groceries')
     assert itemid == 1
+    assert len(transaction.select_all()) == 1
+
 
 def test_delete_transaction(db_file):
 	#Yalda
@@ -48,14 +51,14 @@ def test_delete_transaction(db_file):
     assert len(transaction.select_all()) == 0
 
 def test_get_transactions_by_date(db_file):
-	#Yalda
+	#Omar
     transaction = Transaction(db_file)
     transaction.add_transaction(1, 100, 'food', '2022-03-25', 'groceries')
     transaction.add_transaction(2, 200, 'entertainment', '2022-03-26', 'movie')
-    transaction.add_transaction(3, 50, 'food', '2022-03-27', 'restaurant')
+    transaction.add_transaction(3, 50, 'food', '2022-03-26', 'restaurant')
 
-    assert len(transaction.get_transactions_by_date('2022-03')) == 3
-    assert len(transaction.get_transactions_by_date('2022-04')) == 0
+    assert len(transaction.get_transactions_by_date('2022-03-26')) == 2
+    assert len(transaction.get_transactions_by_date('2022-04-3o')) == 0
     assert len(transaction.get_transactions_by_date('2022-03-25')) == 1
 
 def test_get_transactions_by_category(db_file):
@@ -65,12 +68,12 @@ def test_get_transactions_by_category(db_file):
     transaction.add_transaction(2, 200, 'entertainment', '2022-03-26', 'movie')
     transaction.add_transaction(3, 50, 'food', '2022-03-27', 'restaurant')
 
-    result = transaction.get_transactions_by_category()
-    assert result['food'] == 150
-    assert result['entertainment'] == 200
+    result = transaction.get_transactions_by_category('food')
+    assert len(result) == 2
 
-def test_get_transactions_by_year(transaction):
+def test_get_transactions_by_year(db_file):
     #areen
+    transaction = Transaction(db_file)
     transaction.add_transaction(1, 10, 'food', '2022-03-25', 'Bought pizza')
     transaction.add_transaction(2, 20, 'clothing', '2022-03-26', 'Bought a shirt')
     transaction.add_transaction(2, 4, 'Drinks', '2022-03-26', 'Bought a coffee')
@@ -78,13 +81,14 @@ def test_get_transactions_by_year(transaction):
     transactions = transaction.get_transactions_by_year('2022')
     assert len(transactions) == 3
 
-def test_get_transactions_by_month(transaction):
+def test_get_transactions_by_month(db_file):
     #areen
+    transaction = Transaction(db_file)
     transaction.add_transaction(1, 10, 'food', '2022-03-25', 'Bought pizza')
     transaction.add_transaction(2, 20, 'clothing', '2022-03-26', 'Bought a shirt')
     transaction.add_transaction(2, 4, 'Drinks', '2022-03-26', 'Bought a coffee')
 
-    transactions = transaction.get_transactions_by_year('03')
+    transactions = transaction.get_transactions_by_month('03')
     assert len(transactions) == 3
 
  

@@ -63,25 +63,27 @@ def process_choice(choice):
         transaction.delete_transaction(item_num)
     elif choice=='7': #summarize transactions by date #sophia
         date = input("date (MM-DD-YYYY): ")
-        transactions = transaction.get_transactions_by_date(date)
+        transaction_list = transaction.get_transactions_by_date(date)
+        transaction_list = sorted(transaction_list, key=lambda x: x['itemid'])
         print("Transactions for " + date + ":")
-        for trans in transactions:
+        for trans in transaction_list:
             print(f"- {trans['itemid']}: {trans['amount']} "
                   f"- {trans['category']} - {trans['date']} "
                   f"- {trans['description']}")
     elif choice == '8': #summarize transactions by month (MM)
         month = input("Enter a month (MM): ")
-        transactions = transaction.get_transactions_by_month(month)
+        transaction_list = transaction.get_transactions_by_month(month)
         print(f"Transactions in month {month}:")
-        for trans in transactions:
+        for trans in transaction_list:
             print(f"- {trans['itemid']}: {trans['amount']} "
                   f"- {trans['category']} - {trans['description']}")
     elif choice == '9': #summarize transactions by year (YYYY)
-        year = input("Year (YYYY): ")
-        transactions = transaction.get_transactions_by_year(year)
-        print("Transactions:")
-        for trans in transactions:
-            print(f"- {trans['itemid']}: {trans['description']}")
+        year = input("Enter the year (YYYY): ")
+        transaction_list = transaction.get_transactions_by_year(year)
+        print(f"Transactions in year {year}:")
+        for trans in transaction_list:
+            print(f"- {trans['itemid']}: {trans['amount']} "
+                  f"- {trans['category']} - {trans['description']}")
     elif choice == '10': #summarize transactions by category #sophia
         ctgry = input("Enter the category: ")
         summary = transaction.get_transactions_by_category(ctgry)
@@ -95,7 +97,7 @@ def process_choice(choice):
 
 
 def toplevel():
-    #Sophia
+    #Yalda
     ''' take in user choice '''
     print(MENU_OPTIONS)
     choice = input("> ")
