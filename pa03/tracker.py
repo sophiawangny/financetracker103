@@ -2,6 +2,8 @@
 and makes calls to the Transaction class to update the database"""
 
 from transaction import Transaction
+from category import Category
+import sys
 
 MENU_OPTIONS = '''Please select the number to the command you would like:
 0. quit
@@ -25,21 +27,21 @@ def process_choice(choice):
     if choice=='0': #quit
         return
     if choice=='1': #show categories
-        ctgries = transaction.select_all()
+        ctgries = category.select_all()
         for cat in ctgries:
             print(f"- {cat}")
     elif choice=='2': #add category
         name = input("name of category: ")
         desc = input("category description: ")
         ctgry = {'name':name, 'desc':desc}
-        transaction.add_category(ctgry)
+        category.add(ctgry)
     elif choice=='3': #modify category
         print("Modify Category:")
         id_num = int(input("id: "))
         name = input("new name of category: ")
         desc = input("new category description: ")
         ctgry = {'name':name, 'desc':desc}
-        transaction.modify_category(id_num,ctgry)
+        category.update(id_num,ctgry)
     elif choice == '4': #show transactions
         transactions = transaction.get_transactions()
         print("Transactions:")

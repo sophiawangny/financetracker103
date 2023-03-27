@@ -33,13 +33,6 @@ class Transaction:
             (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT)
         ''', ())
 
-    def delete_categories(self): #sophia, testing
-        query = 'DELETE FROM categories'
-        self.runQuery(query, ())
-    def delete_transactions(self): #sophia, testing
-        query = 'DELETE FROM transactions'
-        self.runQuery(query, ())
-
 
 
     def add_transaction(self, itemid, amount, category, date, description):
@@ -54,15 +47,6 @@ class Transaction:
         #Areen
         ''' delete a transaction with a specified item id'''
         self.runQuery('DELETE FROM transactions WHERE itemid = ?', (itemid,))
-
-    def get_transactions(self):  
-        #Yalda
-        '''returns a list of transactions'''
-        temp = self.runQuery('''SELECT * FROM transactions''', ())
-       # transactions = temp.fetchall() #sophia commented out
-       # return [to_dict(t) for t in transactions]
-        return temp
-       # return self.runQuery('''SELECT * FROM transactions''', ()).fetchall()
    
 
     def get_transactions_by_date(self, date):
@@ -99,39 +83,6 @@ class Transaction:
         format = '%Y-%m-%d' # The format, can be changed depending on what is used
         datetimestr = datetime.datetime.strptime(date, format)
         return datetimestr.year
-
-
-    def select_all(self):
-        #Yalda
- 
-
-    
-        ''' return all of the categories as a list of dicts.'''
-        query = "SELECT * FROM categories"
-        cursor = self.runQuery(query)
-        categories = cursor.fetchall()
-        return categories
-    
-    
-    def add_category(self, category):
-        #Yalda #sophia
-        ''' add a category to the table.'''
-        query = '''INSERT INTO categories(name, description) VALUES(?, ?)'''
-        values = (category['name'], category['description'])
-        try:
-            self.runQuery(query, values)
-        except sqlite3.IntegrityError:
-            print('category is already in db')
-        return  
-
-
-    def modify_category(self, id, category):
-        #Yalda
-        '''modify a category in the table.'''
-        query = '''UPDATE categories SET name = ?, description = ? WHERE id = ?'''
-        values = (category['name'], category['description'], id)
-        cursor= self.runQuery(query, values)
-        return
 
     def runQuery(self,query,tuple):
         ''' return all of the uncompleted tasks as a list of dicts.'''
