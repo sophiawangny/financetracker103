@@ -19,7 +19,8 @@ MENU_OPTIONS = '''Please select the number to the command you would like:
 10. summarize transactions by category
 11. print this menu
 '''
-transaction=Transaction()
+transaction = Transaction('transaction.db')
+category = Category('category.db')
 
 
 def process_choice(choice):
@@ -61,23 +62,26 @@ def process_choice(choice):
         item_num = input("Enter the item number to delete: ")
         transaction.delete_transaction(item_num)
     elif choice=='7': #summarize transactions by date #sophia
-        date=input("Enter the date (MM-DD-YYYY):")
-        summary = transaction.get_transactions_by_date(date)
-        print(f"Transactions on {date}:")
-        for ctgry, amount in summary.items():
-            print(f"- {ctgry}: {amount}")
+        date = input("date (MM-DD-YYYY): ")
+        transactions = transaction.get_transactions_by_date(date)
+        print("Transactions for " + date + ":")
+        for trans in transactions:
+            print(f"- {trans['itemid']}: {trans['amount']} "
+                  f"- {trans['category']} - {trans['date']} "
+                  f"- {trans['description']}")
     elif choice == '8': #summarize transactions by month (MM)
-        month = input("Enter the month (MM): ")
-        summary = transaction.summarize_transactions_by_month(month)
-        print(f"Transactions in {month}:")
-        for ctgry, amount in summary.items():
-            print(f"- {ctgry}: {amount}")
+        month = input("Enter a month (MM): ")
+        transactions = transaction.get_transactions_by_month(month)
+        print(f"Transactions in month {month}:")
+        for trans in transactions:
+            print(f"- {trans['itemid']}: {trans['amount']} "
+                  f"- {trans['category']} - {trans['description']}")
     elif choice == '9': #summarize transactions by year (YYYY)
-        year = input("Enter the year (YYYY): ")
-        summary = transaction.summarize_transactions_by_year(year)
-        print(f"Transactions in {year}:")
-        for ctgry, amount in summary.items():
-            print(f"- {ctgry}: {amount}")
+        year = input("Year (YYYY): ")
+        transactions = transaction.get_transactions_by_year(year)
+        print("Transactions:")
+        for trans in transactions:
+            print(f"- {trans['itemid']}: {trans['description']}")
     elif choice == '10': #summarize transactions by category #sophia
         ctgry = input("Enter the category: ")
         summary = transaction.get_transactions_by_category(ctgry)

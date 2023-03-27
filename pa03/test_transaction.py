@@ -1,41 +1,73 @@
 '''
 test_transactions runs unit and integration tests on the transactions module
 '''
-
 import pytest
+import os
+from datetime import datetime
 from transaction import Transaction
 
 @pytest.fixture
-def transaction():
-    return Transaction()
+def db_file():
+	#Sophia
+    db_file = 'test_transactions.db'
+    yield db_file
+    os.remove(db_file)
 
-def test_add_transaction(transaction):
+
+def test_init(db_file):
+    transaction = Transaction(db_file)
+    assert os.path.exists(db_file)
+
+
+def test_select_all(db_file):
+	#Sophia
+    transaction = Transaction(db_file)
+    assert len(transaction.select_all()) == 0
+
+    itemid = transaction.add_transaction(1, 100, 'food', '2022-03-25', 'groceries')
+    assert len(transaction.select_all()) == 1
+    assert transaction.select_all()[0]['itemid'] == itemid
+    assert transaction.select_all()[0]['amount'] == 100
+    assert transaction.select_all()[0]['category'] == 'food'
+    assert transaction.select_all()[0]['date'] == '2022-03-25'
+    assert transaction.select_all()[0]['description'] == 'groceries'
+
+def test_add_transaction(db_file):
 	#Yalda
-    transaction.add_transaction(1, 10, 'Clothing', '2022-03-25', 'Bought a white t-shirt in the mall')
-    transactions = transaction.get_transactions()
-    assert len(transactions) == 1
-    assert transactions[0]['itemid'] == 1
-    assert transactions[0]['amount'] == 10
-    assert transactions[0]['category'] == 'Clothing'
-    assert transactions[0]['date'] == '2022-03-25'
-    assert transactions[0]['description'] == 'Bought a white t-shirt in the mall'
+    transaction = Transaction(db_file)
+    itemid = transaction.add_transaction(1, 100, 'food', '2022-03-25', 'groceries')
+    assert itemid == 1
 
-def test_delete_transaction(transaction):
+def test_delete_transaction(db_file):
 	#Yalda
-    transaction.add_transaction(1, 10, 'food', '2022-03-25', 'Bought pizza')
-    transaction.delete_transaction(1)
-    transactions = transaction.get_transactions()
-    assert len(transactions) == 0
+    transaction = Transaction(db_file)
+    itemid = transaction.add_transaction(1, 100, 'food', '2022-03-25', 'groceries')
+    assert len(transaction.select_all()) == 1
 
+    transaction.delete_transaction(itemid)
+    assert len(transaction.select_all()) == 0
 
-def test_get_transactions_by_date(transaction):
+def test_get_transactions_by_date(db_file):
 	#Yalda
-    transaction.add_transaction(1, 10, 'food', '2022-03-25', 'Bought pizza')
-    transaction.add_transaction(2, 20, 'clothing', '2022-03-26', 'Bought a shirt')
-    transaction.add_transaction(2, 4, 'Drinks', '2022-03-26', 'Bought a coffee')
+    transaction = Transaction(db_file)
+    transaction.add_transaction(1, 100, 'food', '2022-03-25', 'groceries')
+    transaction.add_transaction(2, 200, 'entertainment', '2022-03-26', 'movie')
+    transaction.add_transaction(3, 50, 'food', '2022-03-27', 'restaurant')
 
-    transactions = transaction.get_transactions_by_date('2022-03-26')
-    assert len(transactions) == 2
+    assert len(transaction.get_transactions_by_date('2022-03')) == 3
+    assert len(transaction.get_transactions_by_date('2022-04')) == 0
+    assert len(transaction.get_transactions_by_date('2022-03-25')) == 1
+
+def test_get_transactions_by_category(db_file):
+	#Omar
+    transaction = Transaction(db_file)
+    transaction.add_transaction(1, 100, 'food', '2022-03-25', 'groceries')
+    transaction.add_transaction(2, 200, 'entertainment', '2022-03-26', 'movie')
+    transaction.add_transaction(3, 50, 'food', '2022-03-27', 'restaurant')
+
+    result = transaction.get_transactions_by_category()
+    assert result['food'] == 150
+    assert result['entertainment'] == 200
 
 def test_get_transactions_by_year(transaction):
     #areen
@@ -55,22 +87,7 @@ def test_get_transactions_by_month(transaction):
     transactions = transaction.get_transactions_by_year('03')
     assert len(transactions) == 3
 
-'''
-def test_modify_category2(transaction):
-    transaction.add_category({'name': 'food', 'description': 'Groceries and eating out'})
-    transaction.modify_category(1, {'name': 'drinks', 'description': 'Beverages'}) #sophia edited
-    categories = transaction.select_all()
-    assert len(categories) == 1
-    assert categories[0][0] == 'drinks'
-''' 
-
-def test_to_month(transaction): #sophia
-    month= transaction.to_month('2001-02-04')
-    assert month == 2
-
-def test_to_year(transaction): #sophia
-    year= transaction.to_year('2001-02-04')
-    assert year ==2001 
+ 
 
 
 
