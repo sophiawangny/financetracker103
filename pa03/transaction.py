@@ -1,7 +1,7 @@
 '''The Transaction class for handling SQL commands'''
 import sqlite3
-import os
-import datetime
+#import os
+#import datetime
 
 def to_dict(trans):
     #Areen

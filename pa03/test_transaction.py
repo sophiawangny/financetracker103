@@ -14,7 +14,6 @@ def db_file():
     yield dbb_file
     os.remove(dbb_file)
 
-
 def test_init(db_file):
     '''defining the test file'''
 	#Sophia
