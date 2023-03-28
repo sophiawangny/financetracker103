@@ -1,26 +1,29 @@
 '''
 test_transactions runs unit and integration tests on the transactions module
 '''
-import pytest
 import os
-from datetime import datetime
+#from datetime import datetime
+import pytest
 from transaction import Transaction
 
 @pytest.fixture
 def db_file():
+    '''creating file for testing'''
 	#Sophia
-    db_file = 'test_transactions.db'
-    yield db_file
-    os.remove(db_file)
+    dbb_file = 'test_transactions.db'
+    yield dbb_file
+    os.remove(dbb_file)
 
 
 def test_init(db_file):
+    '''defining the test file'''
 	#Sophia
     transaction = Transaction(db_file)
     assert os.path.exists(db_file)
 
 
 def test_select_all(db_file):
+    '''testing select all'''
 	#Sophia
     transaction = Transaction(db_file)
     assert len(transaction.select_all()) == 0
@@ -34,6 +37,7 @@ def test_select_all(db_file):
     assert transaction.select_all()[0]['description'] == 'groceries'
 
 def test_add_transaction(db_file):
+    '''testing the add_transaction method'''
 	#Yalda
     transaction = Transaction(db_file)
     itemid = transaction.add_transaction(1, 100, 'food', '2022-03-25', 'groceries')
@@ -42,6 +46,7 @@ def test_add_transaction(db_file):
 
 
 def test_delete_transaction(db_file):
+    '''testing the delete_transaaction method'''
 	#Yalda
     transaction = Transaction(db_file)
     itemid = transaction.add_transaction(1, 100, 'food', '2022-03-25', 'groceries')
@@ -51,6 +56,7 @@ def test_delete_transaction(db_file):
     assert len(transaction.select_all()) == 0
 
 def test_get_transactions_by_date(db_file):
+    '''testing the get transactions by date method'''
 	#Omar
     transaction = Transaction(db_file)
     transaction.add_transaction(1, 100, 'food', '2022-03-25', 'groceries')
@@ -62,6 +68,7 @@ def test_get_transactions_by_date(db_file):
     assert len(transaction.get_transactions_by_date('2022-03-25')) == 1
 
 def test_get_transactions_by_category(db_file):
+    '''testing the get transactions by category method'''
 	#Omar
     transaction = Transaction(db_file)
     transaction.add_transaction(1, 100, 'food', '2022-03-25', 'groceries')
@@ -72,6 +79,7 @@ def test_get_transactions_by_category(db_file):
     assert len(result) == 2
 
 def test_get_transactions_by_year(db_file):
+    '''testing the get transaction by year method'''
     #areen
     transaction = Transaction(db_file)
     transaction.add_transaction(1, 10, 'food', '2022-03-25', 'Bought pizza')
@@ -82,6 +90,7 @@ def test_get_transactions_by_year(db_file):
     assert len(transactions) == 3
 
 def test_get_transactions_by_month(db_file):
+    '''testing the get transaction by month method'''
     #areen
     transaction = Transaction(db_file)
     transaction.add_transaction(1, 10, 'food', '2022-03-25', 'Bought pizza')
@@ -90,9 +99,3 @@ def test_get_transactions_by_month(db_file):
 
     transactions = transaction.get_transactions_by_month('03')
     assert len(transactions) == 3
-
- 
-
-
-
-

@@ -61,7 +61,6 @@ class Transaction:
         cur.execute("DELETE FROM transactions WHERE itemid=(?)", (itemid,))
         con.commit()
         con.close()
-   
 
     def get_transactions_by_date(self, date):
         #Areen
