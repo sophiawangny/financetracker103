@@ -22,3 +22,12 @@ test_category.py ....                                                           
 
 ================================================== 4 passed in 0.76s ==================================================
 PS C:\Users\yalda\desktop\financetracker103\pa03>
+
+
+Pylint tests:
+
+category: 10/10
+test_category: 8.33/10
+test_transaction: 8.5/10 - Only problem was something to do with db_file, but could not change it without tests failing
+tracker: 8.67/10
+transaction.py: 9.56/10
