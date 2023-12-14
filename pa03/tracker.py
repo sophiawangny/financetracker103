@@ -24,7 +24,7 @@ category = Category('category.db')
 
 
 def process_choice(choice):
-    #sophia/omar
+    #Omar/Sophia
     """takes in the user input"""
     if choice=='0': #quit
         return
@@ -97,11 +97,12 @@ def process_choice(choice):
 
 
 def toplevel():
-    #Yalda
+    #Yalda/Omar
     ''' take in user choice '''
     print(MENU_OPTIONS)
-    choice = input("> ")
+    choice = 1
     while choice !='0' :
+        choice = input("> ")
         process_choice(choice)
     print('Thanks!')
 
